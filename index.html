@@ -540,6 +540,47 @@
             transform: scale(0.95);
         }
         
+        /* VIEW CART FLOATING BUTTON */
+        .view-cart-float {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: linear-gradient(45deg, var(--success), #229954);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(39, 174, 96, 0.4);
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+            border: none;
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .view-cart-float.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+            pointer-events: all;
+            animation: slideUp 0.3s ease;
+        }
+        
+        .view-cart-float:hover {
+            transform: translateX(-50%) translateY(-3px);
+            box-shadow: 0 15px 40px rgba(39, 174, 96, 0.5);
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateX(-50%) translateY(100px); opacity: 0; }
+            to { transform: translateX(-50%) translateY(0); opacity: 1; }
+        }
+        
         .cart-sidebar {
             position: fixed;
             top: 0;
@@ -547,6 +588,7 @@
             width: 100%;
             max-width: 420px;
             height: 100vh;
+            height: 100dvh; /* Dynamic viewport height for mobile */
             background: rgba(255, 255, 255, 0.98);
             backdrop-filter: blur(20px);
             box-shadow: -10px 0 40px rgba(0,0,0,0.2);
@@ -554,6 +596,7 @@
             transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             flex-direction: column;
+            overflow: hidden; /* Prevent body scroll */
         }
         
         .cart-sidebar.active {
@@ -563,10 +606,11 @@
         .cart-header {
             background: linear-gradient(135deg, var(--secondary), #34495e);
             color: white;
-            padding: 1.5rem;
+            padding: 1rem 1.5rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-shrink: 0; /* Don't shrink */
         }
         
         .cart-header h2 {
@@ -574,6 +618,7 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            font-size: 1.3rem;
         }
         
         .close-cart {
@@ -599,7 +644,10 @@
         .cart-items {
             flex: 1;
             overflow-y: auto;
+            overflow-x: hidden;
             padding: 1rem;
+            -webkit-overflow-scrolling: touch; /* Smooth scroll on iOS */
+            min-height: 0; /* Important for flex scrolling */
         }
         
         .cart-item {
@@ -612,6 +660,7 @@
             animation: slideIn 0.3s ease;
             transition: all 0.3s;
             border: 2px solid transparent;
+            flex-shrink: 0; /* Prevent squishing */
         }
         
         .cart-item:hover {
@@ -624,16 +673,19 @@
             height: 80px;
             border-radius: 10px;
             object-fit: cover;
+            flex-shrink: 0;
         }
         
         .cart-item-details {
             flex: 1;
+            min-width: 0; /* Prevent overflow */
         }
         
         .cart-item-details h4 {
             font-size: 1rem;
             margin-bottom: 0.3rem;
             color: var(--secondary);
+            word-wrap: break-word;
         }
         
         .cart-item-price {
@@ -659,6 +711,7 @@
             transition: all 0.3s;
             font-weight: 700;
             color: var(--primary);
+            flex-shrink: 0;
         }
         
         .quantity-btn:hover {
@@ -672,6 +725,7 @@
             cursor: pointer;
             transition: all 0.3s;
             font-size: 1.2rem;
+            margin-left: auto;
         }
         
         .remove-item:hover {
@@ -679,10 +733,12 @@
         }
         
         .cart-footer {
-            padding: 1.5rem;
+            padding: 1rem 1.5rem;
             background: white;
             border-top: 2px solid #eee;
             box-shadow: 0 -5px 20px rgba(0,0,0,0.05);
+            flex-shrink: 0; /* Don't shrink */
+            z-index: 10;
         }
         
         .bill-details {
@@ -703,7 +759,7 @@
         }
         
         .bill-row.total {
-            font-size: 1.4rem;
+            font-size: 1.2rem;
             font-weight: 700;
             color: var(--secondary);
             border-top: 2px solid #ddd;
@@ -716,9 +772,9 @@
             background: linear-gradient(45deg, #25d366, #128c7e);
             color: white;
             border: none;
-            padding: 1.2rem;
-            border-radius: 15px;
-            font-size: 1.1rem;
+            padding: 1rem;
+            border-radius: 12px;
+            font-size: 1rem;
             font-weight: 700;
             cursor: pointer;
             transition: all 0.3s;
@@ -729,6 +785,7 @@
             box-shadow: 0 5px 20px rgba(37, 211, 102, 0.3);
             position: relative;
             overflow: hidden;
+            min-height: 50px; /* Ensure touch target */
         }
         
         .place-order-btn::before {
@@ -747,13 +804,17 @@
         }
         
         .place-order-btn:hover {
-            transform: translateY(-3px);
+            transform: translateY(-2px);
             box-shadow: 0 8px 30px rgba(37, 211, 102, 0.5);
+        }
+        
+        .place-order-btn:active {
+            transform: scale(0.98);
         }
         
         .empty-cart {
             text-align: center;
-            padding: 3rem;
+            padding: 3rem 1rem;
             color: #999;
         }
         
@@ -812,7 +873,7 @@
         
         .toast {
             position: fixed;
-            bottom: 20px;
+            bottom: 100px;
             left: 50%;
             transform: translateX(-50%) translateY(100px);
             background: var(--secondary);
@@ -827,6 +888,8 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            max-width: 90%;
+            text-align: center;
         }
         
         .toast.show {
@@ -883,6 +946,32 @@
             
             .cart-sidebar {
                 max-width: 100%;
+                border-radius: 0;
+            }
+            
+            .cart-header {
+                padding: 1rem;
+            }
+            
+            .cart-header h2 {
+                font-size: 1.2rem;
+            }
+            
+            .cart-items {
+                padding: 0.8rem;
+            }
+            
+            .cart-item {
+                padding: 0.8rem;
+            }
+            
+            .cart-item-image {
+                width: 70px;
+                height: 70px;
+            }
+            
+            .cart-footer {
+                padding: 1rem;
             }
             
             .category-btn {
@@ -891,8 +980,20 @@
             }
             
             .location-bar {
-                font-size: 0.9rem;
+                font-size: 0.85rem;
                 padding: 0.8rem;
+            }
+            
+            .view-cart-float {
+                padding: 0.8rem 1.5rem;
+                font-size: 0.9rem;
+                bottom: 15px;
+            }
+            
+            .toast {
+                bottom: 90px;
+                font-size: 0.9rem;
+                padding: 0.8rem 1.5rem;
             }
         }
         
@@ -929,7 +1030,6 @@
             100% { transform: rotate(360deg); }
         }
     </style>
-<base target="_blank">
 </head>
 <body>
     <div class="loader" id="loader">
@@ -973,6 +1073,13 @@
         </nav>
     </header>
 
+    <!-- Floating View Cart Button -->
+    <button class="view-cart-float" id="viewCartFloat" onclick="toggleCart()">
+        <i class="fas fa-shopping-cart"></i>
+        <span>View Cart</span>
+        <span id="floatCartCount" style="background: rgba(255,255,255,0.3); padding: 0.2rem 0.6rem; border-radius: 15px; font-size: 0.85rem;">0</span>
+    </button>
+
     <section class="hero">
         <div class="hero-content">
             <h1>Welcome to Savor and Spice</h1>
@@ -1010,6 +1117,8 @@
     </section>
 
     <div class="overlay" id="overlay" onclick="toggleCart()"></div>
+    
+    <!-- Cart Sidebar - Fully Scrollable -->
     <div class="cart-sidebar" id="cartSidebar">
         <div class="cart-header">
             <h2><i class="fas fa-shopping-cart"></i> Your Cart</h2>
@@ -1017,12 +1126,19 @@
                 <i class="fas fa-times"></i>
             </button>
         </div>
+        
+        <!-- Scrollable Items Area -->
         <div class="cart-items" id="cartItems">
             <div class="empty-cart">
                 <i class="fas fa-shopping-basket"></i>
                 <p>Your cart is empty</p>
+                <button class="cta-btn" onclick="toggleCart()" style="margin-top: 1rem; padding: 0.8rem 1.5rem; font-size: 0.9rem;">
+                    Browse Menu
+                </button>
             </div>
         </div>
+        
+        <!-- Fixed Footer with Bill -->
         <div class="cart-footer" id="cartFooter" style="display: none;">
             <div class="bill-details">
                 <div class="bill-row">
@@ -1048,12 +1164,8 @@
 
     <script>
         // ==========================================
-        // CHANGE YOUR WHATSAPP NUMBER HERE
+        // WHATSAPP NUMBER - YOUR NUMBER
         // ==========================================
-        // Replace 923001234567 with your number
-        // Format: Country Code + Number (no + sign, no spaces)
-        // Example for Pakistan: 923001234567
-        // Example for India: 919876543210
         const WHATSAPP_NUMBER = '923068500983';
         
         // ==========================================
@@ -1070,7 +1182,7 @@
         };
         
         // ==========================================
-        // MENU ITEMS - ADD YOUR PRODUCTS HERE
+        // MENU ITEMS
         // ==========================================
         const MENU_ITEMS = [
             {
@@ -1369,7 +1481,7 @@
         }
         
         // ==========================================
-        // CART FUNCTIONS
+        // CART FUNCTIONS WITH FLOATING BUTTON
         // ==========================================
         function addToCart(itemId) {
             const item = MENU_ITEMS.find(i => i.id === itemId);
@@ -1391,8 +1503,10 @@
             }
             
             updateCartCount();
+            showViewCartButton();
             showToast(item.name + ' added to cart!', 'success');
             
+            // Animate cart icon
             const cartIcon = document.querySelector('.cart-icon');
             cartIcon.style.transform = 'scale(1.3) rotate(10deg)';
             setTimeout(() => cartIcon.style.transform = 'scale(1) rotate(0deg)', 300);
@@ -1400,9 +1514,27 @@
         
         function updateCartCount() {
             const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+            
+            // Update header cart count
             const cartCount = document.getElementById('cartCount');
             cartCount.textContent = count;
             cartCount.style.display = count > 0 ? 'flex' : 'none';
+            
+            // Update floating button cart count
+            document.getElementById('floatCartCount').textContent = count;
+            
+            // Show/hide floating button
+            const floatBtn = document.getElementById('viewCartFloat');
+            if (count > 0) {
+                floatBtn.classList.add('show');
+            } else {
+                floatBtn.classList.remove('show');
+            }
+        }
+        
+        function showViewCartButton() {
+            const floatBtn = document.getElementById('viewCartFloat');
+            floatBtn.classList.add('show');
         }
         
         function toggleCart() {
@@ -1457,6 +1589,12 @@
             
             footer.style.display = 'block';
             calculateBill();
+            
+            // Scroll to bottom to show place order button on mobile
+            setTimeout(() => {
+                const cartItems = document.getElementById('cartItems');
+                cartItems.scrollTop = cartItems.scrollHeight;
+            }, 100);
         }
         
         function updateQuantity(itemId, change) {
@@ -1518,15 +1656,15 @@
         }
         
         // ==========================================
-        // WHATSAPP ORDER FUNCTION - FIXED VERSION
+        // WHATSAPP ORDER FUNCTION
         // ==========================================
         function placeOrder() {
-            if (!WHATSAPP_NUMBER || WHATSAPP_NUMBER === '923001234567') {
-                showToast('Please set your WhatsApp number in the code', 'error');
+            if (!WHATSAPP_NUMBER) {
+                showToast('WhatsApp number not configured', 'error');
                 return;
             }
             
-            // Build message line by line to avoid URL encoding issues
+            // Build message
             let messageLines = [];
             messageLines.push('*New Order from Savor and Spice*');
             messageLines.push('');
@@ -1534,7 +1672,6 @@
             messageLines.push('==================');
             messageLines.push('');
             
-            // Add each item
             cart.forEach((item, index) => {
                 messageLines.push((index + 1) + '. ' + item.name);
                 messageLines.push('   Qty: ' + item.quantity);
@@ -1546,7 +1683,6 @@
             messageLines.push('==================');
             messageLines.push('');
             
-            // Calculate totals
             const subtotal = cart.reduce((sum, item) => sum + (item.finalPrice * item.quantity), 0);
             let discount = 0;
             DEALS.forEach(deal => {
@@ -1563,17 +1699,12 @@
             messageLines.push('');
             messageLines.push('Please confirm my order. Thank you!');
             
-            // Join with newlines and encode properly
             const message = messageLines.join('\n');
             const encodedMessage = encodeURIComponent(message);
-            
-            // Create WhatsApp URL
             const whatsappUrl = 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodedMessage;
             
-            // Open WhatsApp
             window.open(whatsappUrl, '_blank');
             
-            // Clear cart
             cart = [];
             updateCartCount();
             toggleCart();
@@ -1594,6 +1725,7 @@
             }, 3000);
         }
         
+        // Close on escape key
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 const sidebar = document.getElementById('cartSidebar');
@@ -1604,6 +1736,7 @@
             }
         });
         
+        // Prevent double tap zoom on mobile
         let lastTouchEnd = 0;
         document.addEventListener('touchend', function(e) {
             const now = Date.now();
