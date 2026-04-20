@@ -15,12 +15,16 @@
             --light: #ecf0f1;
             --dark: #1a1a1a;
             --success: #27ae60;
+            --whatsapp: #25d366;
+            --instagram: #e4405f;
         }
         
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
         }
         
         html {
@@ -34,6 +38,7 @@
             animation: gradientBG 15s ease infinite;
             min-height: 100vh;
             overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
         }
         
         @keyframes gradientBG {
@@ -100,6 +105,7 @@
             align-items: center;
             gap: 0.5rem;
             transition: transform 0.3s;
+            pointer-events: auto;
         }
         
         .logo:hover {
@@ -130,6 +136,7 @@
             transition: all 0.3s;
             position: relative;
             font-size: 0.95rem;
+            pointer-events: auto;
         }
         
         .nav-links a:hover {
@@ -145,6 +152,8 @@
             color: var(--secondary);
             cursor: pointer;
             z-index: 1001;
+            padding: 0.5rem;
+            pointer-events: auto;
         }
         
         .currency-selector {
@@ -157,6 +166,7 @@
             cursor: pointer;
             font-size: 0.85rem;
             transition: all 0.3s;
+            pointer-events: auto;
         }
         
         .currency-selector:hover {
@@ -178,6 +188,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            pointer-events: auto;
         }
         
         .cart-icon:hover {
@@ -267,6 +278,9 @@
             position: relative;
             overflow: hidden;
             animation: fadeInUp 1s ease 0.5s both;
+            pointer-events: auto;
+            -webkit-touch-callout: none;
+            user-select: none;
         }
         
         .cta-btn::before {
@@ -287,6 +301,10 @@
         .cta-btn:hover {
             transform: translateY(-5px);
             box-shadow: 0 15px 40px rgba(230, 126, 34, 0.6);
+        }
+        
+        .cta-btn:active {
+            transform: scale(0.95);
         }
         
         .location-bar {
@@ -315,6 +333,7 @@
             padding: 0.5rem 1rem;
             background: rgba(255,255,255,0.1);
             border-radius: 25px;
+            pointer-events: auto;
         }
         
         .location-bar a:hover {
@@ -366,6 +385,9 @@
             transition: all 0.3s;
             font-weight: 600;
             backdrop-filter: blur(10px);
+            pointer-events: auto;
+            -webkit-touch-callout: none;
+            user-select: none;
         }
         
         .category-btn.active, .category-btn:hover {
@@ -373,6 +395,10 @@
             color: var(--primary);
             transform: translateY(-3px);
             box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        
+        .category-btn:active {
+            transform: scale(0.95);
         }
         
         .deals-banner {
@@ -529,6 +555,11 @@
             justify-content: center;
             gap: 0.5rem;
             font-size: 1rem;
+            pointer-events: auto;
+            -webkit-touch-callout: none;
+            user-select: none;
+            position: relative;
+            z-index: 5;
         }
         
         .add-to-cart:hover {
@@ -540,12 +571,12 @@
             transform: scale(0.95);
         }
         
-        /* VIEW CART FLOATING BUTTON */
+        /* VIEW CART FLOATING BUTTON - FIXED */
         .view-cart-float {
             position: fixed;
             bottom: 20px;
             left: 50%;
-            transform: translateX(-50%) translateY(100px);
+            transform: translateX(-50%) translateY(200px);
             background: linear-gradient(45deg, var(--success), #229954);
             color: white;
             padding: 1rem 2rem;
@@ -558,29 +589,29 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            transition: all 0.3s;
-            border: none;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 3px solid white;
+            pointer-events: auto;
+            -webkit-touch-callout: none;
+            user-select: none;
             opacity: 0;
-            pointer-events: none;
         }
         
         .view-cart-float.show {
             transform: translateX(-50%) translateY(0);
             opacity: 1;
-            pointer-events: all;
-            animation: slideUp 0.3s ease;
         }
         
         .view-cart-float:hover {
-            transform: translateX(-50%) translateY(-3px);
+            transform: translateX(-50%) translateY(-5px);
             box-shadow: 0 15px 40px rgba(39, 174, 96, 0.5);
         }
         
-        @keyframes slideUp {
-            from { transform: translateX(-50%) translateY(100px); opacity: 0; }
-            to { transform: translateX(-50%) translateY(0); opacity: 1; }
+        .view-cart-float:active {
+            transform: translateX(-50%) translateY(0) scale(0.95);
         }
         
+        /* CART SIDEBAR - FIXED FOR MOBILE */
         .cart-sidebar {
             position: fixed;
             top: 0;
@@ -588,7 +619,7 @@
             width: 100%;
             max-width: 420px;
             height: 100vh;
-            height: 100dvh; /* Dynamic viewport height for mobile */
+            height: 100dvh;
             background: rgba(255, 255, 255, 0.98);
             backdrop-filter: blur(20px);
             box-shadow: -10px 0 40px rgba(0,0,0,0.2);
@@ -596,7 +627,7 @@
             transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             flex-direction: column;
-            overflow: hidden; /* Prevent body scroll */
+            overflow: hidden;
         }
         
         .cart-sidebar.active {
@@ -610,7 +641,9 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-shrink: 0; /* Don't shrink */
+            flex-shrink: 0;
+            position: relative;
+            z-index: 10;
         }
         
         .cart-header h2 {
@@ -628,12 +661,16 @@
             font-size: 1.5rem;
             cursor: pointer;
             transition: transform 0.3s;
-            width: 40px;
-            height: 40px;
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
+            pointer-events: auto;
+            -webkit-touch-callout: none;
+            position: relative;
+            z-index: 11;
         }
         
         .close-cart:hover {
@@ -641,13 +678,17 @@
             transform: rotate(90deg);
         }
         
+        .close-cart:active {
+            transform: scale(0.9);
+        }
+        
         .cart-items {
             flex: 1;
             overflow-y: auto;
             overflow-x: hidden;
             padding: 1rem;
-            -webkit-overflow-scrolling: touch; /* Smooth scroll on iOS */
-            min-height: 0; /* Important for flex scrolling */
+            -webkit-overflow-scrolling: touch;
+            min-height: 0;
         }
         
         .cart-item {
@@ -660,7 +701,7 @@
             animation: slideIn 0.3s ease;
             transition: all 0.3s;
             border: 2px solid transparent;
-            flex-shrink: 0; /* Prevent squishing */
+            flex-shrink: 0;
         }
         
         .cart-item:hover {
@@ -678,7 +719,7 @@
         
         .cart-item-details {
             flex: 1;
-            min-width: 0; /* Prevent overflow */
+            min-width: 0;
         }
         
         .cart-item-details h4 {
@@ -702,8 +743,8 @@
         }
         
         .quantity-btn {
-            width: 32px;
-            height: 32px;
+            width: 36px;
+            height: 36px;
             border: 2px solid var(--primary);
             background: white;
             border-radius: 8px;
@@ -712,6 +753,12 @@
             font-weight: 700;
             color: var(--primary);
             flex-shrink: 0;
+            pointer-events: auto;
+            -webkit-touch-callout: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
         }
         
         .quantity-btn:hover {
@@ -720,12 +767,19 @@
             transform: scale(1.1);
         }
         
+        .quantity-btn:active {
+            transform: scale(0.9);
+        }
+        
         .remove-item {
             color: var(--accent);
             cursor: pointer;
             transition: all 0.3s;
             font-size: 1.2rem;
             margin-left: auto;
+            padding: 0.5rem;
+            pointer-events: auto;
+            -webkit-touch-callout: none;
         }
         
         .remove-item:hover {
@@ -737,8 +791,9 @@
             background: white;
             border-top: 2px solid #eee;
             box-shadow: 0 -5px 20px rgba(0,0,0,0.05);
-            flex-shrink: 0; /* Don't shrink */
+            flex-shrink: 0;
             z-index: 10;
+            position: relative;
         }
         
         .bill-details {
@@ -767,9 +822,16 @@
             margin-top: 0.5rem;
         }
         
+        /* ORDER BUTTONS CONTAINER */
+        .order-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+        
         .place-order-btn {
             width: 100%;
-            background: linear-gradient(45deg, #25d366, #128c7e);
+            background: linear-gradient(45deg, var(--whatsapp), #128c7e);
             color: white;
             border: none;
             padding: 1rem;
@@ -785,7 +847,10 @@
             box-shadow: 0 5px 20px rgba(37, 211, 102, 0.3);
             position: relative;
             overflow: hidden;
-            min-height: 50px; /* Ensure touch target */
+            min-height: 50px;
+            pointer-events: auto;
+            -webkit-touch-callout: none;
+            user-select: none;
         }
         
         .place-order-btn::before {
@@ -809,6 +874,54 @@
         }
         
         .place-order-btn:active {
+            transform: scale(0.98);
+        }
+        
+        .instagram-order-btn {
+            width: 100%;
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            box-shadow: 0 5px 20px rgba(220, 39, 67, 0.3);
+            position: relative;
+            overflow: hidden;
+            min-height: 50px;
+            pointer-events: auto;
+            -webkit-touch-callout: none;
+            user-select: none;
+        }
+        
+        .instagram-order-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: 0.5s;
+        }
+        
+        .instagram-order-btn:hover::before {
+            left: 100%;
+        }
+        
+        .instagram-order-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(220, 39, 67, 0.5);
+        }
+        
+        .instagram-order-btn:active {
             transform: scale(0.98);
         }
         
@@ -837,11 +950,13 @@
             opacity: 0;
             visibility: hidden;
             transition: all 0.3s;
+            pointer-events: none;
         }
         
         .overlay.active {
             opacity: 1;
             visibility: visible;
+            pointer-events: auto;
         }
         
         @keyframes fadeInUp {
@@ -890,6 +1005,7 @@
             gap: 0.5rem;
             max-width: 90%;
             text-align: center;
+            pointer-events: none;
         }
         
         .toast.show {
@@ -985,15 +1101,24 @@
             }
             
             .view-cart-float {
-                padding: 0.8rem 1.5rem;
-                font-size: 0.9rem;
+                padding: 0.9rem 1.5rem;
+                font-size: 0.95rem;
                 bottom: 15px;
+                width: 90%;
+                max-width: 350px;
+                justify-content: center;
             }
             
             .toast {
                 bottom: 90px;
                 font-size: 0.9rem;
                 padding: 0.8rem 1.5rem;
+                width: 90%;
+            }
+            
+            .place-order-btn, .instagram-order-btn {
+                padding: 0.9rem;
+                font-size: 0.95rem;
             }
         }
         
@@ -1074,7 +1199,7 @@
     </header>
 
     <!-- Floating View Cart Button -->
-    <button class="view-cart-float" id="viewCartFloat" onclick="toggleCart()">
+    <button class="view-cart-float" id="viewCartFloat" onclick="toggleCart()" ontouchstart="this.style.transform='translateX(-50%) translateY(-5px) scale(0.98)'" ontouchend="this.style.transform=''">
         <i class="fas fa-shopping-cart"></i>
         <span>View Cart</span>
         <span id="floatCartCount" style="background: rgba(255,255,255,0.3); padding: 0.2rem 0.6rem; border-radius: 15px; font-size: 0.85rem;">0</span>
@@ -1118,16 +1243,15 @@
 
     <div class="overlay" id="overlay" onclick="toggleCart()"></div>
     
-    <!-- Cart Sidebar - Fully Scrollable -->
+    <!-- Cart Sidebar -->
     <div class="cart-sidebar" id="cartSidebar">
         <div class="cart-header">
             <h2><i class="fas fa-shopping-cart"></i> Your Cart</h2>
-            <button class="close-cart" onclick="toggleCart()">
+            <button class="close-cart" onclick="toggleCart()" ontouchstart="this.style.transform='scale(0.9)'" ontouchend="this.style.transform=''">
                 <i class="fas fa-times"></i>
             </button>
         </div>
         
-        <!-- Scrollable Items Area -->
         <div class="cart-items" id="cartItems">
             <div class="empty-cart">
                 <i class="fas fa-shopping-basket"></i>
@@ -1138,7 +1262,6 @@
             </div>
         </div>
         
-        <!-- Fixed Footer with Bill -->
         <div class="cart-footer" id="cartFooter" style="display: none;">
             <div class="bill-details">
                 <div class="bill-row">
@@ -1154,9 +1277,17 @@
                     <span id="totalAmount">Rs 0</span>
                 </div>
             </div>
-            <button class="place-order-btn" onclick="placeOrder()">
-                <i class="fab fa-whatsapp"></i> Place Order via WhatsApp
-            </button>
+            
+            <!-- Order Buttons -->
+            <div class="order-buttons">
+                <button class="place-order-btn" id="whatsappBtn" onclick="placeOrder('whatsapp')" ontouchstart="this.style.transform='scale(0.98)'" ontouchend="this.style.transform=''">
+                    <i class="fab fa-whatsapp"></i> Order via WhatsApp
+                </button>
+                
+                <button class="instagram-order-btn" id="instagramBtn" onclick="placeOrder('instagram')" ontouchstart="this.style.transform='scale(0.98)'" ontouchend="this.style.transform=''">
+                    <i class="fab fa-instagram"></i> Order via Instagram
+                </button>
+            </div>
         </div>
     </div>
 
@@ -1164,9 +1295,10 @@
 
     <script>
         // ==========================================
-        // WHATSAPP NUMBER - YOUR NUMBER
+        // CONTACT NUMBERS - CHANGE THESE
         // ==========================================
         const WHATSAPP_NUMBER = '923068500983';
+        const INSTAGRAM_USERNAME = 'shahbaz_360';
         
         // ==========================================
         // CURRENCY SETTINGS
@@ -1296,7 +1428,7 @@
         ];
         
         // ==========================================
-        // DEALS CONFIGURATION
+        // DEALS
         // ==========================================
         const DEALS = [
             {
@@ -1322,6 +1454,7 @@
         // ==========================================
         let cart = [];
         let currentCurrency = 'PKR';
+        let cartOpen = false;
         
         // ==========================================
         // INITIALIZATION
@@ -1356,13 +1489,13 @@
         }
         
         // ==========================================
-        // CURRENCY FUNCTIONS
+        // CURRENCY
         // ==========================================
         function changeCurrency() {
             currentCurrency = document.getElementById('currencySelector').value;
             localStorage.setItem('currency', currentCurrency);
             renderMenu();
-            if (document.getElementById('cartSidebar').classList.contains('active')) {
+            if (cartOpen) {
                 renderCart();
             }
             showToast('Currency: ' + CURRENCIES[currentCurrency].name, 'success');
@@ -1391,7 +1524,7 @@
         }
         
         // ==========================================
-        // MENU FUNCTIONS
+        // MENU
         // ==========================================
         function renderMenu(category = 'all') {
             const grid = document.getElementById('menuGrid');
@@ -1481,7 +1614,7 @@
         }
         
         // ==========================================
-        // CART FUNCTIONS WITH FLOATING BUTTON
+        // CART FUNCTIONS - FIXED
         // ==========================================
         function addToCart(itemId) {
             const item = MENU_ITEMS.find(i => i.id === itemId);
@@ -1504,7 +1637,7 @@
             
             updateCartCount();
             showViewCartButton();
-            showToast(item.name + ' added to cart!', 'success');
+            showToast(item.name + ' added!', 'success');
             
             // Animate cart icon
             const cartIcon = document.querySelector('.cart-icon');
@@ -1515,12 +1648,12 @@
         function updateCartCount() {
             const count = cart.reduce((sum, item) => sum + item.quantity, 0);
             
-            // Update header cart count
+            // Header cart count
             const cartCount = document.getElementById('cartCount');
             cartCount.textContent = count;
             cartCount.style.display = count > 0 ? 'flex' : 'none';
             
-            // Update floating button cart count
+            // Floating button count
             document.getElementById('floatCartCount').textContent = count;
             
             // Show/hide floating button
@@ -1537,15 +1670,20 @@
             floatBtn.classList.add('show');
         }
         
+        // FIXED TOGGLE CART - Works on all devices
         function toggleCart() {
             const sidebar = document.getElementById('cartSidebar');
             const overlay = document.getElementById('overlay');
             
-            if (sidebar.classList.contains('active')) {
+            if (cartOpen) {
+                // Close cart
+                cartOpen = false;
                 sidebar.classList.remove('active');
                 overlay.classList.remove('active');
                 document.body.style.overflow = '';
             } else {
+                // Open cart
+                cartOpen = true;
                 sidebar.classList.add('active');
                 overlay.classList.add('active');
                 document.body.style.overflow = 'hidden';
@@ -1578,7 +1716,7 @@
                         <h4>${item.name}</h4>
                         <div class="cart-item-price">${formatPrice(item.finalPrice * item.quantity)}</div>
                         <div class="quantity-control">
-                            <button class="quantity-btn" onclick="updateQuantity(${item.id}, -1)">-</button>
+                            <button class="quantity-btn" onclick="updateQuantity(${item.id}, -1)">−</button>
                             <span style="font-weight: 600; min-width: 30px; text-align: center;">${item.quantity}</span>
                             <button class="quantity-btn" onclick="updateQuantity(${item.id}, 1)">+</button>
                             <i class="fas fa-trash remove-item" onclick="removeFromCart(${item.id})"></i>
@@ -1589,12 +1727,6 @@
             
             footer.style.display = 'block';
             calculateBill();
-            
-            // Scroll to bottom to show place order button on mobile
-            setTimeout(() => {
-                const cartItems = document.getElementById('cartItems');
-                cartItems.scrollTop = cartItems.scrollHeight;
-            }, 100);
         }
         
         function updateQuantity(itemId, change) {
@@ -1656,15 +1788,15 @@
         }
         
         // ==========================================
-        // WHATSAPP ORDER FUNCTION
+        // ORDER FUNCTIONS - WHATSAPP AND INSTAGRAM
         // ==========================================
-        function placeOrder() {
-            if (!WHATSAPP_NUMBER) {
-                showToast('WhatsApp number not configured', 'error');
+        function placeOrder(platform) {
+            if (cart.length === 0) {
+                showToast('Cart is empty!', 'error');
                 return;
             }
             
-            // Build message
+            // Build order message
             let messageLines = [];
             messageLines.push('*New Order from Savor and Spice*');
             messageLines.push('');
@@ -1701,14 +1833,28 @@
             
             const message = messageLines.join('\n');
             const encodedMessage = encodeURIComponent(message);
-            const whatsappUrl = 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodedMessage;
             
-            window.open(whatsappUrl, '_blank');
+            let url = '';
             
+            if (platform === 'whatsapp') {
+                url = 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodedMessage;
+            } else if (platform === 'instagram') {
+                // Instagram DM link (opens Instagram app or web)
+                url = 'https://ig.me/m/' + INSTAGRAM_USERNAME + '?text=' + encodedMessage;
+                // Fallback: try to open Instagram profile if DM doesn't work
+                setTimeout(() => {
+                    window.open('https://www.instagram.com/' + INSTAGRAM_USERNAME, '_blank');
+                }, 500);
+            }
+            
+            // Open the link
+            window.open(url, '_blank');
+            
+            // Clear cart after order
             cart = [];
             updateCartCount();
             toggleCart();
-            showToast('Order sent to WhatsApp!', 'success');
+            showToast('Order sent via ' + platform + '!', 'success');
         }
         
         // ==========================================
@@ -1725,18 +1871,17 @@
             }, 3000);
         }
         
-        // Close on escape key
+        // Keyboard support
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
-                const sidebar = document.getElementById('cartSidebar');
-                if (sidebar.classList.contains('active')) {
+                if (cartOpen) {
                     toggleCart();
                 }
                 closeMobileMenu();
             }
         });
         
-        // Prevent double tap zoom on mobile
+        // Prevent double tap zoom
         let lastTouchEnd = 0;
         document.addEventListener('touchend', function(e) {
             const now = Date.now();
