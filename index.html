@@ -17,6 +17,7 @@
             --success: #27ae60;
             --whatsapp: #25d366;
             --instagram: #e4405f;
+            --copy: #3498db;
         }
         
         * {
@@ -571,7 +572,7 @@
             transform: scale(0.95);
         }
         
-        /* VIEW CART FLOATING BUTTON - FIXED */
+        /* VIEW CART FLOATING BUTTON */
         .view-cart-float {
             position: fixed;
             bottom: 20px;
@@ -611,7 +612,7 @@
             transform: translateX(-50%) translateY(0) scale(0.95);
         }
         
-        /* CART SIDEBAR - FIXED FOR MOBILE */
+        /* CART SIDEBAR */
         .cart-sidebar {
             position: fixed;
             top: 0;
@@ -822,7 +823,7 @@
             margin-top: 0.5rem;
         }
         
-        /* ORDER BUTTONS CONTAINER */
+        /* ORDER BUTTONS */
         .order-buttons {
             display: flex;
             flex-direction: column;
@@ -877,6 +878,60 @@
             transform: scale(0.98);
         }
         
+        /* COPY ORDER BUTTON */
+        .copy-order-btn {
+            width: 100%;
+            background: linear-gradient(45deg, var(--copy), #2980b9);
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            box-shadow: 0 5px 20px rgba(52, 152, 219, 0.3);
+            position: relative;
+            overflow: hidden;
+            min-height: 50px;
+            pointer-events: auto;
+            -webkit-touch-callout: none;
+            user-select: none;
+        }
+        
+        .copy-order-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: 0.5s;
+        }
+        
+        .copy-order-btn:hover::before {
+            left: 100%;
+        }
+        
+        .copy-order-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(52, 152, 219, 0.5);
+        }
+        
+        .copy-order-btn:active {
+            transform: scale(0.98);
+        }
+        
+        .copy-order-btn.copied {
+            background: linear-gradient(45deg, var(--success), #229954);
+        }
+        
+        /* INSTAGRAM BUTTON */
         .instagram-order-btn {
             width: 100%;
             background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
@@ -1116,7 +1171,7 @@
                 width: 90%;
             }
             
-            .place-order-btn, .instagram-order-btn {
+            .place-order-btn, .copy-order-btn, .instagram-order-btn {
                 padding: 0.9rem;
                 font-size: 0.95rem;
             }
@@ -1284,8 +1339,12 @@
                     <i class="fab fa-whatsapp"></i> Order via WhatsApp
                 </button>
                 
-                <button class="instagram-order-btn" id="instagramBtn" onclick="placeOrder('instagram')" ontouchstart="this.style.transform='scale(0.98)'" ontouchend="this.style.transform=''">
-                    <i class="fab fa-instagram"></i> Order via Instagram
+                <button class="copy-order-btn" id="copyBtn" onclick="copyOrder()" ontouchstart="this.style.transform='scale(0.98)'" ontouchend="this.style.transform=''">
+                    <i class="fas fa-copy"></i> <span id="copyBtnText">Copy Order Details</span>
+                </button>
+                
+                <button class="instagram-order-btn" id="instagramBtn" onclick="openInstagram()" ontouchstart="this.style.transform='scale(0.98)'" ontouchend="this.style.transform=''">
+                    <i class="fab fa-instagram"></i> Open Instagram DM
                 </button>
             </div>
         </div>
@@ -1295,7 +1354,7 @@
 
     <script>
         // ==========================================
-        // CONTACT NUMBERS - CHANGE THESE
+        // CONTACT INFO - CHANGE THESE
         // ==========================================
         const WHATSAPP_NUMBER = '923068500983';
         const INSTAGRAM_USERNAME = 'shahbaz_360';
@@ -1614,7 +1673,7 @@
         }
         
         // ==========================================
-        // CART FUNCTIONS - FIXED
+        // CART FUNCTIONS
         // ==========================================
         function addToCart(itemId) {
             const item = MENU_ITEMS.find(i => i.id === itemId);
@@ -1639,7 +1698,6 @@
             showViewCartButton();
             showToast(item.name + ' added!', 'success');
             
-            // Animate cart icon
             const cartIcon = document.querySelector('.cart-icon');
             cartIcon.style.transform = 'scale(1.3) rotate(10deg)';
             setTimeout(() => cartIcon.style.transform = 'scale(1) rotate(0deg)', 300);
@@ -1648,15 +1706,12 @@
         function updateCartCount() {
             const count = cart.reduce((sum, item) => sum + item.quantity, 0);
             
-            // Header cart count
             const cartCount = document.getElementById('cartCount');
             cartCount.textContent = count;
             cartCount.style.display = count > 0 ? 'flex' : 'none';
             
-            // Floating button count
             document.getElementById('floatCartCount').textContent = count;
             
-            // Show/hide floating button
             const floatBtn = document.getElementById('viewCartFloat');
             if (count > 0) {
                 floatBtn.classList.add('show');
@@ -1666,23 +1721,19 @@
         }
         
         function showViewCartButton() {
-            const floatBtn = document.getElementById('viewCartFloat');
-            floatBtn.classList.add('show');
+            document.getElementById('viewCartFloat').classList.add('show');
         }
         
-        // FIXED TOGGLE CART - Works on all devices
         function toggleCart() {
             const sidebar = document.getElementById('cartSidebar');
             const overlay = document.getElementById('overlay');
             
             if (cartOpen) {
-                // Close cart
                 cartOpen = false;
                 sidebar.classList.remove('active');
                 overlay.classList.remove('active');
                 document.body.style.overflow = '';
             } else {
-                // Open cart
                 cartOpen = true;
                 sidebar.classList.add('active');
                 overlay.classList.add('active');
@@ -1788,15 +1839,9 @@
         }
         
         // ==========================================
-        // ORDER FUNCTIONS - WHATSAPP AND INSTAGRAM
+        // BUILD ORDER MESSAGE (Shared function)
         // ==========================================
-        function placeOrder(platform) {
-            if (cart.length === 0) {
-                showToast('Cart is empty!', 'error');
-                return;
-            }
-            
-            // Build order message
+        function buildOrderMessage() {
             let messageLines = [];
             messageLines.push('*New Order from Savor and Spice*');
             messageLines.push('');
@@ -1831,30 +1876,123 @@
             messageLines.push('');
             messageLines.push('Please confirm my order. Thank you!');
             
-            const message = messageLines.join('\n');
+            return messageLines.join('\n');
+        }
+        
+        // ==========================================
+        // WHATSAPP ORDER (Works automatically)
+        // ==========================================
+        function placeOrder(platform) {
+            if (cart.length === 0) {
+                showToast('Cart is empty!', 'error');
+                return;
+            }
+            
+            const message = buildOrderMessage();
             const encodedMessage = encodeURIComponent(message);
             
             let url = '';
             
             if (platform === 'whatsapp') {
                 url = 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodedMessage;
-            } else if (platform === 'instagram') {
-                // Instagram DM link (opens Instagram app or web)
-                url = 'https://ig.me/m/' + INSTAGRAM_USERNAME + '?text=' + encodedMessage;
-                // Fallback: try to open Instagram profile if DM doesn't work
-                setTimeout(() => {
-                    window.open('https://www.instagram.com/' + INSTAGRAM_USERNAME, '_blank');
-                }, 500);
+                window.open(url, '_blank');
+                
+                // Clear cart
+                cart = [];
+                updateCartCount();
+                toggleCart();
+                showToast('Order sent via WhatsApp!', 'success');
+            }
+        }
+        
+        // ==========================================
+        // COPY ORDER (For Instagram, Messenger, etc.)
+        // ==========================================
+        function copyOrder() {
+            if (cart.length === 0) {
+                showToast('Cart is empty!', 'error');
+                return;
             }
             
-            // Open the link
-            window.open(url, '_blank');
+            const message = buildOrderMessage();
             
-            // Clear cart after order
-            cart = [];
-            updateCartCount();
-            toggleCart();
-            showToast('Order sent via ' + platform + '!', 'success');
+            // Copy to clipboard
+            navigator.clipboard.writeText(message).then(function() {
+                // Show copied feedback
+                const btn = document.getElementById('copyBtn');
+                const btnText = document.getElementById('copyBtnText');
+                
+                btn.classList.add('copied');
+                btnText.textContent = 'Copied! Now paste in Instagram';
+                
+                showToast('Order copied! Paste it in Instagram DM', 'success');
+                
+                // Reset button after 3 seconds
+                setTimeout(() => {
+                    btn.classList.remove('copied');
+                    btnText.textContent = 'Copy Order Details';
+                }, 3000);
+                
+            }).catch(function(err) {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = message;
+                textArea.style.position = 'fixed';
+                textArea.style.left = '-9999px';
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                
+                try {
+                    document.execCommand('copy');
+                    const btn = document.getElementById('copyBtn');
+                    const btnText = document.getElementById('copyBtnText');
+                    btn.classList.add('copied');
+                    btnText.textContent = 'Copied! Now paste in Instagram';
+                    showToast('Order copied! Paste it in Instagram DM', 'success');
+                    
+                    setTimeout(() => {
+                        btn.classList.remove('copied');
+                        btnText.textContent = 'Copy Order Details';
+                    }, 3000);
+                } catch (err) {
+                    showToast('Failed to copy. Please copy manually.', 'error');
+                }
+                
+                document.body.removeChild(textArea);
+            });
+        }
+        
+        // ==========================================
+        // OPEN INSTAGRAM DM
+        // ==========================================
+        function openInstagram() {
+            if (cart.length === 0) {
+                showToast('Cart is empty!', 'error');
+                return;
+            }
+            
+            // First copy the order
+            const message = buildOrderMessage();
+            
+            navigator.clipboard.writeText(message).then(function() {
+                showToast('Order copied! Opening Instagram...', 'success');
+                
+                // Open Instagram after short delay
+                setTimeout(() => {
+                    // Try Instagram DM deep link
+                    window.location.href = 'instagram://user?username=' + INSTAGRAM_USERNAME;
+                    
+                    // Fallback to web after 1 second
+                    setTimeout(() => {
+                        window.open('https://www.instagram.com/' + INSTAGRAM_USERNAME, '_blank');
+                    }, 1000);
+                }, 800);
+                
+            }).catch(function(err) {
+                // If copy fails, still open Instagram
+                window.open('https://www.instagram.com/' + INSTAGRAM_USERNAME, '_blank');
+            });
         }
         
         // ==========================================
@@ -1871,7 +2009,6 @@
             }, 3000);
         }
         
-        // Keyboard support
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 if (cartOpen) {
@@ -1881,7 +2018,6 @@
             }
         });
         
-        // Prevent double tap zoom
         let lastTouchEnd = 0;
         document.addEventListener('touchend', function(e) {
             const now = Date.now();
